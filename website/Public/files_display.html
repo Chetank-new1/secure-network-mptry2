@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files Display</title>
+    <style>
+        .file-list {
+            margin-top: 20px;
+        }
+        .file-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Files</h1>
+    <div id="files-container" class="file-list"></div>
+
+    <script>
+        // Fetch files from the backend
+        async function fetchFiles(type) {
+            const response = await fetch(`/list-files?type=${type}`);
+            const data = await response.json();
+            if (data.success) {
+                displayFiles(data.files);
+            } else {
+                alert('Error fetching files');
+            }
+        }
+
+        // Display files with download links
+        function displayFiles(files) {
+            const container = document.getElementById('files-container');
+            container.innerHTML = '';
+
+            files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span>${file.name}</span> 
+                    <a href="${file.downloadLink}" download>Download</a>
+                `;
+                container.appendChild(fileItem);
+            });
+        }
+
+        // On page load, fetch and display files
+        fetchFiles('audio'); // You can change this to 'video', 'text', etc.
+    </script>
+    ><script src="../scripts/files_display.js"></script>
+</body>
+</html>
