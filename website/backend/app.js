@@ -24,7 +24,9 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 // Route for user registration
 app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
-  const stmt = db.prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+  const stmt = db.prepare(
+    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
+  );
   stmt.run(username, email, password, (err) => {
     if (err) {
       return res.status(500).json({ error: "User registration failed" });
@@ -55,21 +57,29 @@ app.post("/login", (req, res) => {
 
 // Route to display files
 app.get("/list-files", (req, res) => {
-  const { type } = req.query;
-  const dirPath = path.join(__dirname, "..", "files", type);
+  app.get("/list-files", (req, res) => {
+    const fileType = req.query.type;
+    const directoryPath = path.join(__dirname, "..", "files", fileType);
 
-  const fs = require("fs");
-  fs.readdir(dirPath, (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to load files" });
-    }
+    console.log(`Fetching files from: ${directoryPath}`); // Debugging: Log the directory path
 
-    const fileList = files.map((file) => ({
-      name: file,
-      downloadLink: `/files/${type}/${file}`,
-    }));
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        console.error("Error reading directory:", err); // Debugging: Log the error
+        return res
+          .status(500)
+          .json({ success: false, error: "Unable to retrieve files" });
+      }
 
-    res.json({ success: true, files: fileList });
+      console.log("Files found:", files); // Debugging: Log the files found
+
+      const fileData = files.map((file) => ({
+        name: file,
+        downloadLink: `/files/${fileType}/${file}`,
+      }));
+
+      res.json({ success: true, files: fileData });
+    });
   });
 });
 
