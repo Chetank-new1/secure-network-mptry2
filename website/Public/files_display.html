@@ -24,15 +24,47 @@
 <body>
     <h1>Select File Type</h1>
     <div class="file-type-list">
-        <button class="file-type-item" onclick="('audio')">Audio Files</button><br>
-        <button class="file-type-item" onclick="('video')">Video Files</button><br>
-        <button class="file-type-item" onclick="('text')">Text Files</button><br>
-        <button class="file-type-item" onclick="('images')">Image Files</button>
+        <button class="file-type-item" onclick="selectFileType('audio')">Audio Files</button><br>
+        <button class="file-type-item" onclick="selectFileType('video')">Video Files</button><br>
+        <button class="file-type-item" onclick="selectFileType('text')">Text Files</button><br>
+        <button class="file-type-item" onclick="selectFileType('images')">Image Files</button>
     </div>
 
     <h2>Available Files</h2>
     <div id="files-container" class="file-list"></div>
 
-    <script src="../scripts/files_display.js"></script>
+    <script>
+        // Function to select file type and fetch corresponding files
+        function selectFileType(type) {
+            fetchFiles(type);
+        }
+
+        // Fetch files from the backend
+        async function fetchFiles(type) {
+            const response = await fetch(`/list-files?type=${type}`);
+            const data = await response.json();
+            if (data.success) {
+                displayFiles(data.files);
+            } else {
+                alert('Error fetching files');
+            }
+        }
+
+        // Display files with download links
+        function displayFiles(files) {
+            const container = document.getElementById('files-container');
+            container.innerHTML = '';
+
+            files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span>${file.name}</span> 
+                    <a href="${file.downloadLink}" download>Download</a>
+                `;
+                container.appendChild(fileItem);
+            });
+        }
+    </script>
 </body>
 </html>
