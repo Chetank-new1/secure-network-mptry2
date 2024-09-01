@@ -1,6 +1,7 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const fs = require("fs");
 const app = express();
 
 // Middleware for parsing request bodies and serving static files
@@ -56,30 +57,29 @@ app.post("/login", (req, res) => {
 });
 
 // Route to display files
+
 app.get("/list-files", (req, res) => {
-  app.get("/list-files", (req, res) => {
-    const fileType = req.query.type;
-    const directoryPath = path.join(__dirname, "..", "files", fileType);
+  const fileType = req.query.type;
+  const directoryPath = path.join(__dirname, "..", "files", fileType);
 
-    console.log(`Fetching files from: ${directoryPath}`); // Debugging: Log the directory path
+  console.log(`Fetching files from: ${directoryPath}`); // Debugging: Log the directory path
 
-    fs.readdir(directoryPath, (err, files) => {
-      if (err) {
-        console.error("Error reading directory:", err); // Debugging: Log the error
-        return res
-          .status(500)
-          .json({ success: false, error: "Unable to retrieve files" });
-      }
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error("Error reading directory:", err); // Debugging: Log the error
+      return res
+        .status(500)
+        .json({ success: false, error: "Unable to retrieve files" });
+    }
 
-      console.log("Files found:", files); // Debugging: Log the files found
+    console.log("Files found:", files); // Debugging: Log the files found
 
-      const fileData = files.map((file) => ({
-        name: file,
-        downloadLink: `/files/${fileType}/${file}`,
-      }));
+    const fileData = files.map((file) => ({
+      name: file,
+      downloadLink: `/files/${fileType}/${file}`,
+    }));
 
-      res.json({ success: true, files: fileData });
-    });
+    res.json({ success: true, files: fileData });
   });
 });
 
