@@ -21,7 +21,7 @@ app.use(
 app.use("/auth", authRoutes);
 app.use("/files", fileRoutes);
 
-app.use("/files", express.static(path.join(__dirname, "..", "files")));
+// app.use("/files", express.static(path.join(__dirname, "..", "files")));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

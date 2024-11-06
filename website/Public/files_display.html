@@ -1,78 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Files Display</title>
-    <style>
-      .file-type-list {
-        margin-top: 20px;
-      }
-      .file-type-item {
-        margin-bottom: 10px;
-        font-size: 18px;
-      }
-      .file-list {
-        margin-top: 20px;
-      }
-      .file-item {
-        margin-bottom: 10px;
-        font-size: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Select File Type</h1>
-    <div class="file-type-list">
-      <button class="file-type-item" onclick="selectFileType('audio')">
-        Audio Files</button
-      ><br />
-      <button class="file-type-item" onclick="selectFileType('videos')">
-        Video Files</button
-      ><br />
-      <button class="file-type-item" onclick="selectFileType('text')">
-        Text Files</button
-      ><br />
-      <button class="file-type-item" onclick="selectFileType('images')">
-        Image Files
-      </button>
+    <link rel="stylesheet" href="scripts/styles.css">
+</head>
+<body>
+    <h1>File Management</h1>
+
+    <!-- Toggle Buttons -->
+    <button id="localFilesBtn">Local Files</button>
+    <button id="firebaseFilesBtn">Firebase Files</button>
+
+    <!-- Local Files Section -->
+    <div id="localFilesSection" style="display: none;">
+        <h2>Local Files</h2>
+        <button onclick="showLocalFiles('audio')">Audio Files</button>
+        <button onclick="showLocalFiles('images')">Image Files</button>
+        <button onclick="showLocalFiles('text')">Text Files</button>
+        <button onclick="showLocalFiles('videos')">Video Files</button>
+        <div id="localFilesContainer"></div>
     </div>
 
-    <h2>Available Files</h2>
-    <div id="files-container" class="file-list"></div>
+    <!-- Firebase Files Section -->
+    <div id="firebaseFilesSection" style="display: none;">
+        <h2>Firebase Files</h2>
+        <input type="file" id="firebaseFileInput" />
+        <button onclick="uploadFirebaseFile()" id="uploadFirebaseButton">Upload to Firebase</button>
+        <div id="firebaseFilesContainer"></div>
+    </div>
 
-    <script src="scripts/files_display.js">
-      // // Function to select file type and fetch corresponding files
-      // function selectFileType(type) {
-      //     fetchFiles(type);
-      // }
-
-      // // Fetch files from the backend
-      // async function fetchFiles(type) {
-      //     const response = await fetch(`/list-files?type=${type}`);
-      //     const data = await response.json();
-      //     if (data.success) {
-      //         displayFiles(data.files);
-      //     } else {
-      //         alert('Error fetching files');
-      //     }
-      // }
-
-      // // Display files with download links
-      // function displayFiles(files) {
-      //     const container = document.getElementById('files-container');
-      //     container.innerHTML = '';
-
-      //     files.forEach(file => {
-      //         const fileItem = document.createElement('div');
-      //         fileItem.className = 'file-item';
-      //         fileItem.innerHTML = `
-      //             <span>${file.name}</span>
-      //             <a href="${file.downloadLink}" download>Download</a>
-      //         `;
-      //         container.appendChild(fileItem);
-      //     });
-      // }
-    </script>
-  </body>
+    <!-- <script type="module" src="scripts/firebaseclient.js"></script> -->
+    <script defer src="scripts/files_display.js"></script>
+</body>
 </html>

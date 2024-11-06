@@ -1,3 +1,5 @@
 # Node.js 
 /node_modules
 website/files/
+website/backend/utils/
+website/Public/scripts/firebaseclient.js
