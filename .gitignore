@@ -4,3 +4,5 @@ website/files/
 website/backend/utils/
 website/Public/scripts/firebaseclient.js
 Files_Project_Report
+package-lock.json
+package.json
